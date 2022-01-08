@@ -12,7 +12,7 @@ import com.upgrad.bookmyconsultation.entity.User;
 import com.upgrad.bookmyconsultation.exception.ApplicationException;
 import com.upgrad.bookmyconsultation.exception.InvalidInputException;
 import com.upgrad.bookmyconsultation.model.AuthorizedUser;
-import com.upgrad.bookmyconsultation.provider.BasicAuthDecoder;
+import com.upgrad.bookmyconsultation.model.dto.UserLoginDTO;
 import com.upgrad.bookmyconsultation.provider.BearerAuthDecoder;
 import com.upgrad.bookmyconsultation.service.AuthTokenService;
 import com.upgrad.bookmyconsultation.service.AuthenticationService;
@@ -33,10 +33,17 @@ public class AuthenticationController {
     @Autowired
     private AuthTokenService authTokenService;
 
-    @PostMapping(path = "/login")
+/*    @PostMapping(path = "/login")
     public ResponseEntity<AuthorizedUser> login(@RequestHeader final String authorization) throws ApplicationException {
         final BasicAuthDecoder basicAuthDecoder = new BasicAuthDecoder(authorization);
         final AuthorizedUser authorizedUser = authenticationService.authenticate(basicAuthDecoder.getEmail(), basicAuthDecoder.getPassword());
+        return ResponseEntity.status(HttpStatus.OK).body(authorizedUser);
+    }    */
+
+    @PostMapping(path = "/login")
+    public ResponseEntity<AuthorizedUser> login(@RequestBody final UserLoginDTO authorization) throws ApplicationException {
+//        final BasicAuthDecoder basicAuthDecoder = new BasicAuthDecoder(authorization);
+        final AuthorizedUser authorizedUser = authenticationService.authenticate(authorization.getEmail(), authorization.getPassword());
         return ResponseEntity.status(HttpStatus.OK).body(authorizedUser);
     }
 

@@ -35,15 +35,15 @@ public class AuthFilter extends ApiFilter {
 		}
 
 		final String pathInfo = servletRequest.getRequestURI();
-		if (!pathInfo.contains("register") && !pathInfo.contains("actuator") && !pathInfo.contains("doctors")) {
+		if (!pathInfo.contains("register") &&!pathInfo.contains("login") && !pathInfo.contains("actuator") && !pathInfo.contains("doctors")) {
 			final String authorization = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
 			if (StringUtils.isEmpty(authorization)) {
 				throw new UnauthorizedException(RestErrorCode.ATH_001);
 			}
 
-			if (pathInfo.contains("login") && !authorization.startsWith(BASIC_AUTH_PREFIX)) {
+/*			if (pathInfo.contains("login") && !authorization.startsWith(BASIC_AUTH_PREFIX)) {
 				throw new UnauthorizedException(RestErrorCode.ATH_002);
-			}
+			}*/
 
 			if (!pathInfo.contains("login")) {
 				final String accessToken = new BearerAuthDecoder(authorization).getAccessToken();

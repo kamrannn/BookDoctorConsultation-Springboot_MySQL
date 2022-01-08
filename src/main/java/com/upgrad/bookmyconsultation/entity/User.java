@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -11,13 +12,14 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User{
+public class User {
     private String firstName;
     private String lastName;
     private String dob;
     private String mobile;
     @Id
-    private String emailId ;
+    @Column(unique = true)
+    private String emailId;
     private String password;
     private String createdDate;
     private String salt;
@@ -25,12 +27,12 @@ public class User{
 
 //Mark it with Data, Entity, Builder, NoArgsConstructor, AllArgsConstructor
 //create a class named User
-	//create firstName of type String
-	//create lastName of type String
-	//create dob of type String
-	//create mobile of type String
-	//create primary key 'emailId' of type String
-	//create password of type String
-	//create createdDate of type String
-	//create salt of type String
-	//all the mentioned members must be private
+//create firstName of type String
+//create lastName of type String
+//create dob of type String
+//create mobile of type String
+//create primary key 'emailId' of type String
+//create password of type String
+//create createdDate of type String
+//create salt of type String
+//all the mentioned members must be private

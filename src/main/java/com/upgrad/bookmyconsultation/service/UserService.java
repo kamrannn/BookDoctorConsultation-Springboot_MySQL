@@ -27,7 +27,7 @@ public class UserService {
     public User register(User user) throws InvalidInputException {
         ValidationUtils.validate(user);
 
-        user.setCreatedDate(LocalDate.now().toString());
+        user.setCreatedDate(LocalDate.now() + "");
         encryptPassword(user);
         userRepository.save(user);
         return user;
