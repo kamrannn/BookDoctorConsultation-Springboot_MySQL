@@ -18,45 +18,39 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.upgrad.bookmyconsultation.constants.ResourceConstants.BASIC_AUTH_PREFIX;
-
 @Component
 public class AuthFilter extends ApiFilter {
 
-	@Autowired
-	private AuthTokenService authTokenService;
+    @Autowired
+    private AuthTokenService authTokenService;
 
-	@Override
-	public void doFilter(HttpServletRequest servletRequest, HttpServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    @Override
+    public void doFilter(HttpServletRequest servletRequest, HttpServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-		if (servletRequest.getMethod().equalsIgnoreCase("OPTIONS")) {
-			servletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-			return;
-		}
+        if (servletRequest.getMethod().equalsIgnoreCase("OPTIONS")) {
+            servletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return;
+        }
 
-		final String pathInfo = servletRequest.getRequestURI();
-		if (!pathInfo.contains("register") &&!pathInfo.contains("login") && !pathInfo.contains("actuator") && !pathInfo.contains("doctors")) {
-			final String authorization = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-			if (StringUtils.isEmpty(authorization)) {
-				throw new UnauthorizedException(RestErrorCode.ATH_001);
-			}
+        final String pathInfo = servletRequest.getRequestURI();
+        if (!pathInfo.contains("register") && !pathInfo.contains("login") && !pathInfo.contains("actuator") && !pathInfo.contains("doctors")) {
+            final String authorization = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+            if (StringUtils.isEmpty(authorization)) {
+                throw new UnauthorizedException(RestErrorCode.ATH_001);
+            }
 
-/*			if (pathInfo.contains("login") && !authorization.startsWith(BASIC_AUTH_PREFIX)) {
-				throw new UnauthorizedException(RestErrorCode.ATH_002);
-			}*/
-
-			if (!pathInfo.contains("login")) {
-				final String accessToken = new BearerAuthDecoder(authorization).getAccessToken();
-				try {
-					final UserAuthToken userAuthTokenEntity = authTokenService.validateToken(accessToken);
-					servletRequest.setAttribute(HttpHeaders.AUTHORIZATION, userAuthTokenEntity.getUser().getEmailId());
-				} catch (AuthorizationFailedException e) {
-					servletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
-					return;
-				}
-			}
-		}
-		filterChain.doFilter(servletRequest, servletResponse);
-	}
+            if (!pathInfo.contains("login")) {
+                final String accessToken = new BearerAuthDecoder(authorization).getAccessToken();
+                try {
+                    final UserAuthToken userAuthTokenEntity = authTokenService.validateToken(accessToken);
+                    servletRequest.setAttribute(HttpHeaders.AUTHORIZATION, userAuthTokenEntity.getUser().getEmailId());
+                } catch (AuthorizationFailedException e) {
+                    servletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+                    return;
+                }
+            }
+        }
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
 
 }

@@ -46,5 +46,10 @@ public class UserAdminController {
         return ResponseEntity.ok(appointmentService.getAppointmentsForUser(userId));
     }
 
+    @GetMapping
+    public ResponseEntity getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
 
 }
