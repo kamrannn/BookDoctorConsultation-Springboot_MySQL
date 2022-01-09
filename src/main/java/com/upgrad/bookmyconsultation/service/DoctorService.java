@@ -9,6 +9,7 @@ import com.upgrad.bookmyconsultation.model.TimeSlot;
 import com.upgrad.bookmyconsultation.repository.AddressRepository;
 import com.upgrad.bookmyconsultation.repository.AppointmentRepository;
 import com.upgrad.bookmyconsultation.repository.DoctorRepository;
+import com.upgrad.bookmyconsultation.util.ValidationUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class DoctorService {
 
 
     public Doctor register(Doctor doctor) throws InvalidInputException {
+        ValidationUtils.validate(doctor);
         List<String> attributes = new ArrayList<>();
         if (null != doctor) {
             if (doctor.getAddress() == null) {

@@ -4,6 +4,8 @@ package com.upgrad.bookmyconsultation.service;
 import com.upgrad.bookmyconsultation.entity.User;
 import com.upgrad.bookmyconsultation.exception.InvalidInputException;
 import com.upgrad.bookmyconsultation.exception.ResourceUnAvailableException;
+import com.upgrad.bookmyconsultation.exception.UnexpectedException;
+import com.upgrad.bookmyconsultation.exception.UserErrorCode;
 import com.upgrad.bookmyconsultation.provider.PasswordCryptographyProvider;
 import com.upgrad.bookmyconsultation.repository.UserRepository;
 import com.upgrad.bookmyconsultation.util.ValidationUtils;
@@ -27,6 +29,11 @@ public class UserService {
     public User register(User user) throws InvalidInputException {
         ValidationUtils.validate(user);
 
+        Optional<User> optionalUser = userRepository.findById(user.getEmailId());
+        if (optionalUser.isPresent()) {
+            throw new UnexpectedException(UserErrorCode.USR_009, user);
+        }
+        
         user.setCreatedDate(LocalDate.now() + "");
         encryptPassword(user);
         userRepository.save(user);
