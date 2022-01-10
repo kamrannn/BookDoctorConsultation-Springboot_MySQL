@@ -3,10 +3,8 @@ package com.upgrad.bookmyconsultation.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.UUID;
 
@@ -17,14 +15,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Rating {
     @Id
-/*    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")*/
-    private String id=  UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
     private String appointmentId;
     private String doctorId;
     private Integer rating;
     private String comments;
-
 }
 //mark this class as an 'entity class'
 //Use Data annotation to generate boilerplate code
